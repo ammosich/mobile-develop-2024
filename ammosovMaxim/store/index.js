@@ -1,10 +1,12 @@
-import { createStore, combineReducers } from 'redux';
-import themeReducer from './themeReducer';
+import { configureStore } from '@reduxjs/toolkit';
+import themeReducer from './themeSlice';
 
-const rootReducer = combineReducers({
-  theme: themeReducer,
-});
-
-const store = createStore(rootReducer);
-
-export default store; 
+export const store = configureStore({
+  reducer: {
+    theme: themeReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+}); 
