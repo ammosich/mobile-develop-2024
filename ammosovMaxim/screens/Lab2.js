@@ -1,59 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const Lab2 = () => {
-  const [count, setCount] = useState(0);
-  const [message, setMessage] = useState('Initial message');
-
-  // useEffect, выполняющийся при монтировании и каждом обновлении компонента
-  useEffect(() => {
-    console.log('Effect ran: Component mounted or updated');
-    setMessage(`Count changed to: ${count}`);
-    
-    // Функция очистки (cleanup)
-    return () => {
-      console.log('Cleanup: Effect cleanup before next effect or unmount');
-    };
-  }, [count]); // Зависимость от count
-
-  // useEffect, выполняющийся только при монтировании
-  useEffect(() => {
-    console.log('Effect ran: Component mounted');
-    
-    // Имитация загрузки данных
-    const timer = setTimeout(() => {
-      setMessage('Data loaded!');
-    }, 2000);
-
-    return () => {
-      console.log('Cleanup: Component will unmount');
-      clearTimeout(timer);
-    };
-  }, []); // Пустой массив зависимостей
+  const [count, setCount] = useState(0); // Инициализируем состояние
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Count: {count}</Text>
-      <Text style={styles.text}>{message}</Text>
-      <Button
-        title="Increment Count"
-        onPress={() => setCount(count + 1)}
-      />
+      <Text style={styles.title}>useState Демонстрация (Lab2)</Text>
+      <Text style={styles.counter}>Счётчик: {count}</Text>
+      <View style={styles.buttonContainer}>
+        <Button title="Увеличить" onPress={() => setCount(count + 1)} />
+        <Button title="Сбросить" onPress={() => setCount(0)} />
+      </View>
+      <View style={styles.navigationButton}>
+        <Button title="Перейти к Lab1" onPress={() => navigation.navigate('Lab1')} />
+      </View>
     </View>
   );
 };
+
+export default Lab2;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
+    padding: 20,
   },
-  text: {
-    fontSize: 18,
-    margin: 10,
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+  },
+  counter: {
+    fontSize: 32,
+    marginBottom: 30,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 20,
+  },
+  navigationButton: {
+    marginTop: 10,
   },
 });
-
-export default Lab2;

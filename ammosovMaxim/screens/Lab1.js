@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const Lab1 = () => {
   const [count, setCount] = useState(0); // Инициализируем состояние
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>useState Демонстрация</Text>
+      <Text style={styles.title}>useState Демонстрация (Lab1)</Text>
       <Text style={styles.counter}>Счётчик: {count}</Text>
       <View style={styles.buttonContainer}>
         <Button title="Увеличить" onPress={() => setCount(count + 1)} />
         <Button title="Сбросить" onPress={() => setCount(0)} />
+      </View>
+      <View style={styles.navigationButton}>
+        <Button title="Перейти к Lab2" onPress={() => navigation.navigate('Lab2')} />
       </View>
     </View>
   );
@@ -36,5 +41,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     gap: 10,
+    marginBottom: 20,
+  },
+  navigationButton: {
+    marginTop: 10,
   },
 });

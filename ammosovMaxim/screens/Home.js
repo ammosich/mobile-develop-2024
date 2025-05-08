@@ -14,14 +14,7 @@ const Home = ({ navigation }) => {
         title="Лабораторная 2"
         onPress={() => navigation.navigate('Lab2')}
       />
-      <Button 
-        title="Лабораторная 3"
-        onPress={() => navigation.navigate('Lab3')}
-      />
-      <Button 
-        title="Лабораторная 4"
-        onPress={() => navigation.navigate('Lab4')}
-      />
+
     </View>
   );
 };
