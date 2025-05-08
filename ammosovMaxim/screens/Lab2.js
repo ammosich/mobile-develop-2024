@@ -1,59 +1,68 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const Lab2 = () => {
-  const [count, setCount] = useState(0);
-  const [message, setMessage] = useState('Initial message');
+  const [text, setText] = useState(''); // Введённый текст
+  const [charCount, setCharCount] = useState(0); // Количество символов
+  const navigation = useNavigation();
 
-  // useEffect, выполняющийся при монтировании и каждом обновлении компонента
+  // useEffect для подсчёта символов при изменении текста
   useEffect(() => {
-    console.log('Effect ran: Component mounted or updated');
-    setMessage(`Count changed to: ${count}`);
-    
-    // Функция очистки (cleanup)
-    return () => {
-      console.log('Cleanup: Effect cleanup before next effect or unmount');
-    };
-  }, [count]); // Зависимость от count
-
-  // useEffect, выполняющийся только при монтировании
-  useEffect(() => {
-    console.log('Effect ran: Component mounted');
-    
-    // Имитация загрузки данных
-    const timer = setTimeout(() => {
-      setMessage('Data loaded!');
-    }, 2000);
-
-    return () => {
-      console.log('Cleanup: Component will unmount');
-      clearTimeout(timer);
-    };
-  }, []); // Пустой массив зависимостей
+    setCharCount(text.length);
+  }, [text]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Count: {count}</Text>
-      <Text style={styles.text}>{message}</Text>
-      <Button
-        title="Increment Count"
-        onPress={() => setCount(count + 1)}
+      <Text style={styles.title}>useEffect Демонстрация (Lab2)</Text>
+      <Text style={styles.label}>Введите текст:</Text>
+      <TextInput
+        style={styles.input}
+        value={text}
+        onChangeText={setText}
+        placeholder="Начните печатать..."
       />
+      <Text style={styles.result}>Количество символов: {charCount}</Text>
+      <View style={styles.navigationButton}>
+        <Button title="Перейти к Lab1" onPress={() => navigation.navigate('Lab1')} />
+        <Button title="Перейти к Lab3" onPress={() => navigation.navigate('Lab3')} />
+      </View>
     </View>
   );
 };
+
+export default Lab2;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
+    padding: 20,
   },
-  text: {
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+  },
+  label: {
     fontSize: 18,
-    margin: 10,
+    marginBottom: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    width: '80%',
+    marginBottom: 20,
+    borderRadius: 5,
+    fontSize: 16,
+  },
+  result: {
+    fontSize: 20,
+    marginBottom: 20,
+  },
+  navigationButton: {
+    marginTop: 10,
+    gap: 10,
   },
 });
-
-export default Lab2;
