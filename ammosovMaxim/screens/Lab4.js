@@ -1,20 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleTheme } from '../store/themeSlice';
 
-const Lab1 = () => {
-  const [count, setCount] = useState(0); // Инициализируем состояние
+const Lab4 = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const isDark = useSelector((state) => state.theme.isDark); // Получаем состояние темы
 
   return (
     <View style={[styles.container, { backgroundColor: isDark ? '#333' : '#fff' }]}>
-      <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>useState Демонстрация (Lab1)</Text>
-      <Text style={[styles.counter, { color: isDark ? '#fff' : '#000' }]}>Счётчик: {count}</Text>
+      <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>Демонстрация Redux (Lab4)</Text>
+      <Text style={[styles.label, { color: isDark ? '#fff' : '#000' }]}>Текущая тема: {isDark ? 'Тёмная' : 'Светлая'}</Text>
       <View style={styles.buttonContainer}>
-        <Button title="Увеличить" onPress={() => setCount(count + 1)} />
-        <Button title="Сбросить" onPress={() => setCount(0)} />
+        <Button
+          title="Переключить тему"
+          onPress={() => dispatch(toggleTheme())}
+        />
       </View>
       <View style={styles.navigationButton}>
         <Button title="Назад" onPress={() => navigation.navigate('Home')} />
@@ -23,7 +26,7 @@ const Lab1 = () => {
   );
 };
 
-export default Lab1;
+export default Lab4;
 
 const styles = StyleSheet.create({
   container: {
@@ -35,18 +38,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 20,
+    textAlign: 'center',
   },
-  counter: {
-    fontSize: 32,
-    marginBottom: 30,
+  label: {
+    fontSize: 18,
+    marginBottom: 20,
   },
   buttonContainer: {
-    flexDirection: 'row',
-    gap: 10,
-    marginBottom: 20,
+    marginVertical: 10,
   },
   navigationButton: {
     marginTop: 10,
-    gap: 10,
   },
 });

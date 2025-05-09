@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const Lab2 = () => {
   const [text, setText] = useState(''); // Введённый текст
   const [charCount, setCharCount] = useState(0); // Количество символов
   const navigation = useNavigation();
+  const isDark = useSelector((state) => state.theme.isDark); // Получаем состояние темы
 
   // useEffect для подсчёта символов при изменении текста
   useEffect(() => {
@@ -13,16 +15,17 @@ const Lab2 = () => {
   }, [text]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>useEffect Демонстрация (Lab2)</Text>
-      <Text style={styles.label}>Введите текст:</Text>
+    <View style={[styles.container, { backgroundColor: isDark ? '#333' : '#fff' }]}>
+      <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>useEffect Демонстрация (Lab2)</Text>
+      <Text style={[styles.label, { color: isDark ? '#fff' : '#000' }]}>Введите текст:</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, { backgroundColor: isDark ? '#555' : '#fff', color: isDark ? '#fff' : '#000' }]}
         value={text}
         onChangeText={setText}
         placeholder="Начните печатать..."
+        placeholderTextColor={isDark ? '#aaa' : '#666'}
       />
-      <Text style={styles.result}>Количество символов: {charCount}</Text>
+      <Text style={[styles.result, { color: isDark ? '#fff' : '#000' }]}>Количество символов: {charCount}</Text>
       <View style={styles.navigationButton}>
         <Button title="Назад" onPress={() => navigation.navigate('Home')} />
       </View>

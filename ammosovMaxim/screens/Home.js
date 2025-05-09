@@ -1,8 +1,10 @@
-// screens/Home.js
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const Home = ({ navigation }) => {
+const Home = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Выбор лабораторных</Text>
@@ -17,6 +19,10 @@ const Home = ({ navigation }) => {
       <Button 
         title="Лабораторная 3"
         onPress={() => navigation.navigate('Lab3')}
+      />
+      <Button 
+        title="Лабораторная 4"
+        onPress={() => navigation.navigate('Lab4')}
       />
     </View>
   );

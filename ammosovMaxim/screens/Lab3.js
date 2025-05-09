@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 // Функция для вычисления факториала (тяжёлая вычислительная задача)
 const calculateFactorial = (n) => {
@@ -15,6 +16,7 @@ const Lab3 = () => {
   const [inputNumber, setInputNumber] = useState('20'); // Входное число для факториала
   const [trigger, setTrigger] = useState(0); // Состояние для принудительного рендера
   const navigation = useNavigation();
+  const isDark = useSelector((state) => state.theme.isDark); // Получаем состояние темы
 
   // Без useMemo: вычисление при каждом рендере
   const startTimeWithoutMemo = performance.now();
@@ -29,37 +31,38 @@ const Lab3 = () => {
   const timeWithMemo = (performance.now() - startTimeWithMemo).toFixed(2);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Демонстрация useMemo (Lab3)</Text>
+    <View style={[styles.container, { backgroundColor: isDark ? '#333' : '#fff' }]}>
+      <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>Демонстрация useMemo (Lab3)</Text>
       
       {/* Ввод числа */}
-      <Text style={styles.label}>Введите число для вычисления факториала:</Text>
+      <Text style={[styles.label, { color: isDark ? '#fff' : '#000' }]}>Введите число для вычисления факториала:</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, { backgroundColor: isDark ? '#555' : '#fff', color: isDark ? '#fff' : '#000' }]}
         keyboardType="numeric"
         value={inputNumber}
         onChangeText={setInputNumber}
         placeholder="Введите число (например, 20)"
+        placeholderTextColor={isDark ? '#aaa' : '#666'}
       />
 
       {/* Без useMemo */}
       <View style={styles.resultContainer}>
-        <Text style={styles.subTitle}>Без useMemo:</Text>
-        <Text style={styles.result}>
+        <Text style={[styles.subTitle, { color: isDark ? '#fff' : '#000' }]}>Без useMemo:</Text>
+        <Text style={[styles.result, { color: isDark ? '#fff' : '#000' }]}>
           Факториал: {resultWithoutMemo.slice(0, 20)}...
         </Text>
-        <Text style={styles.time}>Время: {timeWithoutMemo} мс</Text>
-        {timeWithoutMemo > 10 && <ActivityIndicator size="small" color="#ff0000" />}
+        <Text style={[styles.time, { color: isDark ? '#ccc' : '#555' }]}>Время: {timeWithoutMemo} мс</Text>
+        {timeWithoutMemo > 10 && <ActivityIndicator size="small" color={isDark ? '#ff6666' : '#ff0000'} />}
       </View>
 
       {/* С useMemo */}
       <View style={styles.resultContainer}>
-        <Text style={styles.subTitle}>С useMemo:</Text>
-        <Text style={styles.result}>
+        <Text style={[styles.subTitle, { color: isDark ? '#fff' : '#000' }]}>С useMemo:</Text>
+        <Text style={[styles.result, { color: isDark ? '#fff' : '#000' }]}>
           Факториал: {resultWithMemo.slice(0, 20)}...
         </Text>
-        <Text style={styles.time}>Время: {timeWithMemo} мс</Text>
-        {timeWithMemo > 10 && <ActivityIndicator size="small" color="#ff0000" />}
+        <Text style={[styles.time, { color: isDark ? '#ccc' : '#555' }]}>Время: {timeWithMemo} мс</Text>
+        {timeWithMemo > 10 && <ActivityIndicator size="small" color={isDark ? '#ff6666' : '#ff0000'} />}
       </View>
 
       {/* Кнопка для принудительного рендера */}
@@ -120,7 +123,6 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: 16,
-    color: '#555',
   },
   buttonContainer: {
     marginVertical: 10,
