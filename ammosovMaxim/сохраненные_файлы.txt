@@ -219,23 +219,29 @@ file: App.js
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Provider } from 'react-redux';
+import { store } from './store';
 import Home from './screens/Home';
 import Lab1 from './screens/Lab1';
 import Lab2 from './screens/Lab2';
 import Lab3 from './screens/Lab3';
+import Lab4 from './screens/Lab4';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={Home} options={{ title: 'Главная' }} />
-        <Stack.Screen name="Lab1" component={Lab1} options={{ title: 'Лабораторная 1' }} />
-        <Stack.Screen name="Lab2" component={Lab2} options={{ title: 'Лабораторная 2' }} />
-        <Stack.Screen name="Lab3" component={Lab3} options={{ title: 'Лабораторная 3' }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={Home} options={{ title: 'Главная' }} />
+          <Stack.Screen name="Lab1" component={Lab1} options={{ title: 'Лабораторная 1' }} />
+          <Stack.Screen name="Lab2" component={Lab2} options={{ title: 'Лабораторная 2' }} />
+          <Stack.Screen name="Lab3" component={Lab3} options={{ title: 'Лабораторная 3' }} />
+          <Stack.Screen name="Lab4" component={Lab4} options={{ title: 'Лабораторная 4' }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 };
 
@@ -244,11 +250,13 @@ export default App;
 
 file: screens/Home.js
 
-// screens/Home.js
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const Home = ({ navigation }) => {
+const Home = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Выбор лабораторных</Text>
@@ -263,6 +271,10 @@ const Home = ({ navigation }) => {
       <Button 
         title="Лабораторная 3"
         onPress={() => navigation.navigate('Lab3')}
+      />
+      <Button 
+        title="Лабораторная 4"
+        onPress={() => navigation.navigate('Lab4')}
       />
     </View>
   );
@@ -284,21 +296,22 @@ const styles = StyleSheet.create({
 export default Home;
 
 
-
 file: screens/Lab1.js
 
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const Lab1 = () => {
   const [count, setCount] = useState(0); // Инициализируем состояние
   const navigation = useNavigation();
+  const isDark = useSelector((state) => state.theme.isDark); // Получаем состояние темы
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>useState Демонстрация (Lab1)</Text>
-      <Text style={styles.counter}>Счётчик: {count}</Text>
+    <View style={[styles.container, { backgroundColor: isDark ? '#333' : '#fff' }]}>
+      <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>useState Демонстрация (Lab1)</Text>
+      <Text style={[styles.counter, { color: isDark ? '#fff' : '#000' }]}>Счётчик: {count}</Text>
       <View style={styles.buttonContainer}>
         <Button title="Увеличить" onPress={() => setCount(count + 1)} />
         <Button title="Сбросить" onPress={() => setCount(0)} />
@@ -344,11 +357,13 @@ file: screens/Lab2.js
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const Lab2 = () => {
   const [text, setText] = useState(''); // Введённый текст
   const [charCount, setCharCount] = useState(0); // Количество символов
   const navigation = useNavigation();
+  const isDark = useSelector((state) => state.theme.isDark); // Получаем состояние темы
 
   // useEffect для подсчёта символов при изменении текста
   useEffect(() => {
@@ -356,16 +371,17 @@ const Lab2 = () => {
   }, [text]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>useEffect Демонстрация (Lab2)</Text>
-      <Text style={styles.label}>Введите текст:</Text>
+    <View style={[styles.container, { backgroundColor: isDark ? '#333' : '#fff' }]}>
+      <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>useEffect Демонстрация (Lab2)</Text>
+      <Text style={[styles.label, { color: isDark ? '#fff' : '#000' }]}>Введите текст:</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, { backgroundColor: isDark ? '#555' : '#fff', color: isDark ? '#fff' : '#000' }]}
         value={text}
         onChangeText={setText}
         placeholder="Начните печатать..."
+        placeholderTextColor={isDark ? '#aaa' : '#666'}
       />
-      <Text style={styles.result}>Количество символов: {charCount}</Text>
+      <Text style={[styles.result, { color: isDark ? '#fff' : '#000' }]}>Количество символов: {charCount}</Text>
       <View style={styles.navigationButton}>
         <Button title="Назад" onPress={() => navigation.navigate('Home')} />
       </View>
@@ -415,6 +431,7 @@ file: screens/Lab3.js
 import React, { useState, useMemo } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 // Функция для вычисления факториала (тяжёлая вычислительная задача)
 const calculateFactorial = (n) => {
@@ -429,6 +446,7 @@ const Lab3 = () => {
   const [inputNumber, setInputNumber] = useState('20'); // Входное число для факториала
   const [trigger, setTrigger] = useState(0); // Состояние для принудительного рендера
   const navigation = useNavigation();
+  const isDark = useSelector((state) => state.theme.isDark); // Получаем состояние темы
 
   // Без useMemo: вычисление при каждом рендере
   const startTimeWithoutMemo = performance.now();
@@ -443,37 +461,38 @@ const Lab3 = () => {
   const timeWithMemo = (performance.now() - startTimeWithMemo).toFixed(2);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Демонстрация useMemo (Lab3)</Text>
+    <View style={[styles.container, { backgroundColor: isDark ? '#333' : '#fff' }]}>
+      <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>Демонстрация useMemo (Lab3)</Text>
       
       {/* Ввод числа */}
-      <Text style={styles.label}>Введите число для вычисления факториала:</Text>
+      <Text style={[styles.label, { color: isDark ? '#fff' : '#000' }]}>Введите число для вычисления факториала:</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, { backgroundColor: isDark ? '#555' : '#fff', color: isDark ? '#fff' : '#000' }]}
         keyboardType="numeric"
         value={inputNumber}
         onChangeText={setInputNumber}
         placeholder="Введите число (например, 20)"
+        placeholderTextColor={isDark ? '#aaa' : '#666'}
       />
 
       {/* Без useMemo */}
       <View style={styles.resultContainer}>
-        <Text style={styles.subTitle}>Без useMemo:</Text>
-        <Text style={styles.result}>
+        <Text style={[styles.subTitle, { color: isDark ? '#fff' : '#000' }]}>Без useMemo:</Text>
+        <Text style={[styles.result, { color: isDark ? '#fff' : '#000' }]}>
           Факториал: {resultWithoutMemo.slice(0, 20)}...
         </Text>
-        <Text style={styles.time}>Время: {timeWithoutMemo} мс</Text>
-        {timeWithoutMemo > 10 && <ActivityIndicator size="small" color="#ff0000" />}
+        <Text style={[styles.time, { color: isDark ? '#ccc' : '#555' }]}>Время: {timeWithoutMemo} мс</Text>
+        {timeWithoutMemo > 10 && <ActivityIndicator size="small" color={isDark ? '#ff6666' : '#ff0000'} />}
       </View>
 
       {/* С useMemo */}
       <View style={styles.resultContainer}>
-        <Text style={styles.subTitle}>С useMemo:</Text>
-        <Text style={styles.result}>
+        <Text style={[styles.subTitle, { color: isDark ? '#fff' : '#000' }]}>С useMemo:</Text>
+        <Text style={[styles.result, { color: isDark ? '#fff' : '#000' }]}>
           Факториал: {resultWithMemo.slice(0, 20)}...
         </Text>
-        <Text style={styles.time}>Время: {timeWithMemo} мс</Text>
-        {timeWithMemo > 10 && <ActivityIndicator size="small" color="#ff0000" />}
+        <Text style={[styles.time, { color: isDark ? '#ccc' : '#555' }]}>Время: {timeWithMemo} мс</Text>
+        {timeWithMemo > 10 && <ActivityIndicator size="small" color={isDark ? '#ff6666' : '#ff0000'} />}
       </View>
 
       {/* Кнопка для принудительного рендера */}
@@ -534,7 +553,6 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: 16,
-    color: '#555',
   },
   buttonContainer: {
     marginVertical: 10,
@@ -543,6 +561,95 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
+
+
+file: screens/Lab4.js
+
+import React from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleTheme } from '../store/themeSlice';
+
+const Lab4 = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const isDark = useSelector((state) => state.theme.isDark); // Получаем состояние темы
+
+  return (
+    <View style={[styles.container, { backgroundColor: isDark ? '#333' : '#fff' }]}>
+      <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>Демонстрация Redux (Lab4)</Text>
+      <Text style={[styles.label, { color: isDark ? '#fff' : '#000' }]}>Текущая тема: {isDark ? 'Тёмная' : 'Светлая'}</Text>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Переключить тему"
+          onPress={() => dispatch(toggleTheme())}
+        />
+      </View>
+      <View style={styles.navigationButton}>
+        <Button title="Назад" onPress={() => navigation.navigate('Home')} />
+      </View>
+    </View>
+  );
+};
+
+export default Lab4;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  label: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  buttonContainer: {
+    marginVertical: 10,
+  },
+  navigationButton: {
+    marginTop: 10,
+  },
+});
+
+
+file: store/index.js
+
+import { configureStore } from '@reduxjs/toolkit';
+import themeReducer from './themeSlice';
+
+export const store = configureStore({
+  reducer: {
+    theme: themeReducer,
+  },
+});
+
+
+file: store/themeSlice.js
+
+import { createSlice } from '@reduxjs/toolkit';
+
+const themeSlice = createSlice({
+  name: 'theme',
+  initialState: {
+    isDark: false, // По умолчанию светлая тема
+  },
+  reducers: {
+    toggleTheme: (state) => {
+      state.isDark = !state.isDark;
+    },
+  },
+});
+
+export const { toggleTheme } = themeSlice.actions;
+export default themeSlice.reducer;
 
 
 file: package.json
@@ -559,13 +666,16 @@ file: package.json
     "test": "jest"
   },
   "dependencies": {
+    "@react-navigation/native": "^6.1.18",
+    "@react-navigation/native-stack": "^6.11.0",
+    "@reduxjs/toolkit": "^2.8.1",
     "react": "18.2.0",
     "react-native": "0.74.7",
+    "react-native-gesture-handler": "^2.20.0",
     "react-native-safe-area-context": "4.11.0",
     "react-native-screens": "3.34.0",
-    "react-native-gesture-handler": "^2.20.0",
-    "@react-navigation/native": "^6.1.18",
-    "@react-navigation/native-stack": "^6.11.0"
+    "react-redux": "^9.2.0",
+    "redux": "^5.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -585,6 +695,7 @@ file: package.json
     "node": ">=18"
   }
 }
+
 
 
 file: index.js
