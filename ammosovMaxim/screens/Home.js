@@ -18,7 +18,15 @@ const Home = ({ navigation }) => {
           onPress={() => navigation.navigate('Lab2')}
           color="#2196F3"
         />
+        <View style={styles.buttonSpacing} />
+        <Button
+          title="Лабораторная 3"
+          onPress={() => navigation.navigate('Lab3')}
+          color="#FF5722"
+        />
+
       </View>
+      
     </View>
   );
 };
