@@ -18,7 +18,6 @@ const Home = ({ navigation }) => {
         title="Лабораторная 3"
         onPress={() => navigation.navigate('Lab3')}
       />
-
     </View>
   );
 };
