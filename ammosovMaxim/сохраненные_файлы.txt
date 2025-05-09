@@ -1,0 +1,618 @@
+file: android/build.gradle
+
+buildscript {
+    ext {
+        buildToolsVersion = "34.0.0"
+        minSdkVersion = 23
+        compileSdkVersion = 34
+        targetSdkVersion = 34
+        ndkVersion = "26.1.10909125"
+        kotlinVersion = "1.9.22"
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle")
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+    }
+}
+
+apply plugin: "com.facebook.react.rootproject"
+
+
+
+file: android/app/build.gradle
+
+apply plugin: "com.android.application"
+apply plugin: "org.jetbrains.kotlin.android"
+apply plugin: "com.facebook.react"
+
+/**
+ * This is the configuration block to customize your React Native Android app.
+ * By default you don't need to apply any configuration, just uncomment the lines you need.
+ */
+react {
+    /* Folders */
+    //   The root of your project, i.e. where "package.json" lives. Default is '..'
+    // root = file("../")
+    //   The folder where the react-native NPM package is. Default is ../node_modules/react-native
+    // reactNativeDir = file("../node_modules/react-native")
+    //   The folder where the react-native Codegen package is. Default is ../node_modules/@react-native/codegen
+    // codegenDir = file("../node_modules/@react-native/codegen")
+    //   The cli.js file which is the React Native CLI entrypoint. Default is ../node_modules/react-native/cli.js
+    // cliFile = file("../node_modules/react-native/cli.js")
+
+    /* Variants */
+    //   The list of variants to that are debuggable. For those we're going to
+    //   skip the bundling of the JS bundle and the assets. By default is just 'debug'.
+    //   If you add flavors like lite, prod, etc. you'll have to list your debuggableVariants.
+    // debuggableVariants = ["liteDebug", "prodDebug"]
+
+    /* Bundling */
+    //   A list containing the node command and its flags. Default is just 'node'.
+    // nodeExecutableAndArgs = ["node"]
+    //
+    //   The command to run when bundling. By default is 'bundle'
+    // bundleCommand = "ram-bundle"
+    //
+    //   The path to the CLI configuration file. Default is empty.
+    // bundleConfig = file(../rn-cli.config.js)
+    //
+    //   The name of the generated asset file containing your JS bundle
+    // bundleAssetName = "MyApplication.android.bundle"
+    //
+    //   The entry file for bundle generation. Default is 'index.android.js' or 'index.js'
+    // entryFile = file("../js/MyApplication.android.js")
+    //
+    //   A list of extra flags to pass to the 'bundle' commands.
+    //   See https://github.com/react-native-community/cli/blob/main/docs/commands.md#bundle
+    // extraPackagerArgs = []
+
+    /* Hermes Commands */
+    //   The hermes compiler command to run. By default it is 'hermesc'
+    // hermesCommand = "$rootDir/my-custom-hermesc/bin/hermesc"
+    //
+    //   The list of flags to pass to the Hermes compiler. By default is "-O", "-output-source-map"
+    // hermesFlags = ["-O", "-output-source-map"]
+}
+
+/**
+ * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
+ */
+def enableProguardInReleaseBuilds = false
+
+/**
+ * The preferred build flavor of JavaScriptCore (JSC)
+ *
+ * For example, to use the international variant, you can use:
+ * `def jscFlavor = 'org.webkit:android-jsc-intl:+'`
+ *
+ * The international variant includes ICU i18n library and necessary data
+ * allowing to use e.g. `Date.toLocaleString` and `String.localeCompare` that
+ * give correct results when using with locales other than en-US. Note that
+ * this variant is about 6MiB larger per architecture than default.
+ */
+def jscFlavor = 'org.webkit:android-jsc:+'
+
+android {
+    ndkVersion rootProject.ext.ndkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdk rootProject.ext.compileSdkVersion
+
+    namespace "com.ammosovmaxim"
+    defaultConfig {
+        applicationId "com.ammosovmaxim"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            // Caution! In production, you need to generate your own keystore file.
+            // see https://reactnative.dev/docs/signed-apk-android.
+            signingConfig signingConfigs.debug
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+}
+
+dependencies {
+    // The version of react-native is set by the React Native Gradle Plugin
+    implementation("com.facebook.react:react-android")
+
+    if (hermesEnabled.toBoolean()) {
+        implementation("com.facebook.react:hermes-android")
+    } else {
+        implementation jscFlavor
+    }
+}
+
+apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+
+
+
+file: android/settings.gradle
+
+rootProject.name = 'ammosovMaxim'
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':app'
+includeBuild('../node_modules/@react-native/gradle-plugin')
+
+
+
+file: android/gradle.properties
+
+# Project-wide Gradle settings.
+
+# IDE (e.g. Android Studio) users:
+# Gradle settings configured through the IDE *will override*
+# any settings specified in this file.
+
+# For more details on how to configure your build environment visit
+# http://www.gradle.org/docs/current/userguide/build_environment.html
+
+# Specifies the JVM arguments used for the daemon process.
+# The setting is particularly useful for tweaking memory settings.
+# Default value: -Xmx512m -XX:MaxMetaspaceSize=256m
+org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m
+
+# When configured, Gradle will run in incubating parallel mode.
+# This option should only be used with decoupled projects. More details, visit
+# http://www.gradle.org/docs/current/userguide/multi_project_builds.html#sec:decoupled_projects
+# org.gradle.parallel=true
+
+# AndroidX package structure to make it clearer which packages are bundled with the
+# Android operating system, and which are packaged with your app's APK
+# https://developer.android.com/topic/libraries/support-library/androidx-rn
+android.useAndroidX=true
+# Automatically convert third-party libraries to use AndroidX
+android.enableJetifier=true
+
+# Use this property to specify which architecture you want to build.
+# You can also override it from the CLI using
+# ./gradlew <task> -PreactNativeArchitectures=x86_64
+reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64
+
+# Use this property to enable support to the new architecture.
+# This will allow you to use TurboModules and the Fabric render in
+# your application. You should enable this flag either if you want
+# to write custom TurboModules/Fabric components OR use libraries that
+# are providing them.
+newArchEnabled=false
+
+# Use this property to enable or disable the Hermes JS engine.
+# If set to false, you will be using JSC instead.
+hermesEnabled=true
+
+
+
+file: android/gradle/wrapper/gradle-wrapper.properties
+
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+distributionUrl=https\://services.gradle.org/distributions/gradle-8.5-all.zip
+networkTimeout=10000
+validateDistributionUrl=true
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+
+
+
+file: App.js
+
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Lab1 from './screens/Lab1';
+import Lab2 from './screens/Lab2';
+import Lab3 from './screens/Lab3';
+
+const Stack = createNativeStackNavigator();
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Lab1">
+        <Stack.Screen name="Lab1" component={Lab1} options={{ title: 'Лабораторная 1' }} />
+        <Stack.Screen name="Lab2" component={Lab2} options={{ title: 'Лабораторная 2' }} />
+        <Stack.Screen name="Lab3" component={Lab3} options={{ title: 'Лабораторная 3' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App;
+
+
+file: screens/Home.js
+
+// screens/Home.js
+import React from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
+
+const Home = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Выбор лабораторных</Text>
+      <Button 
+        title="Лабораторная 1"
+        onPress={() => navigation.navigate('Lab1')}
+      />
+      <Button 
+        title="Лабораторная 2"
+        onPress={() => navigation.navigate('Lab2')}
+      />
+
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+});
+
+export default Home;
+
+
+
+file: screens/Lab1.js
+
+import React, { useState } from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+const Lab1 = () => {
+  const [count, setCount] = useState(0); // Инициализируем состояние
+  const navigation = useNavigation();
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>useState Демонстрация (Lab1)</Text>
+      <Text style={styles.counter}>Счётчик: {count}</Text>
+      <View style={styles.buttonContainer}>
+        <Button title="Увеличить" onPress={() => setCount(count + 1)} />
+        <Button title="Сбросить" onPress={() => setCount(0)} />
+      </View>
+      <View style={styles.navigationButton}>
+        <Button title="Перейти к Lab2" onPress={() => navigation.navigate('Lab2')} />
+        <Button title="Перейти к Lab3" onPress={() => navigation.navigate('Lab3')} />
+      </View>
+    </View>
+  );
+};
+
+export default Lab1;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+  },
+  counter: {
+    fontSize: 32,
+    marginBottom: 30,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 20,
+  },
+  navigationButton: {
+    marginTop: 10,
+    gap: 10,
+  },
+});
+
+
+file: screens/Lab2.js
+
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+const Lab2 = () => {
+  const [text, setText] = useState(''); // Введённый текст
+  const [charCount, setCharCount] = useState(0); // Количество символов
+  const navigation = useNavigation();
+
+  // useEffect для подсчёта символов при изменении текста
+  useEffect(() => {
+    setCharCount(text.length);
+  }, [text]);
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>useEffect Демонстрация (Lab2)</Text>
+      <Text style={styles.label}>Введите текст:</Text>
+      <TextInput
+        style={styles.input}
+        value={text}
+        onChangeText={setText}
+        placeholder="Начните печатать..."
+      />
+      <Text style={styles.result}>Количество символов: {charCount}</Text>
+      <View style={styles.navigationButton}>
+        <Button title="Перейти к Lab1" onPress={() => navigation.navigate('Lab1')} />
+        <Button title="Перейти к Lab3" onPress={() => navigation.navigate('Lab3')} />
+      </View>
+    </View>
+  );
+};
+
+export default Lab2;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    width: '80%',
+    marginBottom: 20,
+    borderRadius: 5,
+    fontSize: 16,
+  },
+  result: {
+    fontSize: 20,
+    marginBottom: 20,
+  },
+  navigationButton: {
+    marginTop: 10,
+    gap: 10,
+  },
+});
+
+
+file: screens/Lab3.js
+
+import React, { useState, useMemo } from 'react';
+import { View, Text, Button, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+// Функция для вычисления факториала (тяжёлая вычислительная задача)
+const calculateFactorial = (n) => {
+  let result = 1n; // Используем BigInt для больших чисел
+  for (let i = 1n; i <= n; i++) {
+    result *= i;
+  }
+  return result.toString(); // Возвращаем как строку для отображения
+};
+
+const Lab3 = () => {
+  const [inputNumber, setInputNumber] = useState('20'); // Входное число для факториала
+  const [trigger, setTrigger] = useState(0); // Состояние для принудительного рендера
+  const navigation = useNavigation();
+
+  // Без useMemo: вычисление при каждом рендере
+  const startTimeWithoutMemo = performance.now();
+  const resultWithoutMemo = calculateFactorial(BigInt(inputNumber || 0));
+  const timeWithoutMemo = (performance.now() - startTimeWithoutMemo).toFixed(2);
+
+  // С useMemo: кэширование результата
+  const startTimeWithMemo = performance.now();
+  const resultWithMemo = useMemo(() => {
+    return calculateFactorial(BigInt(inputNumber || 0));
+  }, [inputNumber]);
+  const timeWithMemo = (performance.now() - startTimeWithMemo).toFixed(2);
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Демонстрация useMemo (Lab3)</Text>
+      
+      {/* Ввод числа */}
+      <Text style={styles.label}>Введите число для вычисления факториала:</Text>
+      <TextInput
+        style={styles.input}
+        keyboardType="numeric"
+        value={inputNumber}
+        onChangeText={setInputNumber}
+        placeholder="Введите число (например, 20)"
+      />
+
+      {/* Без useMemo */}
+      <View style={styles.resultContainer}>
+        <Text style={styles.subTitle}>Без useMemo:</Text>
+        <Text style={styles.result}>
+          Факториал: {resultWithoutMemo.slice(0, 20)}...
+        </Text>
+        <Text style={styles.time}>Время: {timeWithoutMemo} мс</Text>
+        {timeWithoutMemo > 10 && <ActivityIndicator size="small" color="#ff0000" />}
+      </View>
+
+      {/* С useMemo */}
+      <View style={styles.resultContainer}>
+        <Text style={styles.subTitle}>С useMemo:</Text>
+        <Text style={styles.result}>
+          Факториал: {resultWithMemo.slice(0, 20)}...
+        </Text>
+        <Text style={styles.time}>Время: {timeWithMemo} мс</Text>
+        {timeWithMemo > 10 && <ActivityIndicator size="small" color="#ff0000" />}
+      </View>
+
+      {/* Кнопка для принудительного рендера */}
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Обновить (триггер рендера)"
+          onPress={() => setTrigger(trigger + 1)}
+        />
+      </View>
+
+      {/* Навигация */}
+      <View style={styles.navigationButton}>
+        <Button title="Перейти к Lab1" onPress={() => navigation.navigate('Lab1')} />
+      </View>
+    </View>
+  );
+};
+
+export default Lab3;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  label: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    width: '80%',
+    marginBottom: 20,
+    borderRadius: 5,
+    fontSize: 16,
+  },
+  resultContainer: {
+    marginVertical: 20,
+    alignItems: 'center',
+  },
+  subTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  result: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  time: {
+    fontSize: 16,
+    color: '#555',
+  },
+  buttonContainer: {
+    marginVertical: 10,
+  },
+  navigationButton: {
+    marginTop: 10,
+  },
+});
+
+
+file: package.json
+
+{
+  "name": "ammosovMaxim",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "lint": "eslint .",
+    "start": "react-native start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "react": "18.2.0",
+    "react-native": "0.74.7",
+    "react-native-safe-area-context": "4.11.0",
+    "react-native-screens": "3.34.0",
+    "react-native-gesture-handler": "^2.20.0",
+    "@react-navigation/native": "^6.1.18",
+    "@react-navigation/native-stack": "^6.11.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@babel/preset-env": "^7.20.0",
+    "@babel/runtime": "^7.20.0",
+    "@react-native-community/cli": "13.6.9",
+    "@react-native/babel-preset": "0.74.89",
+    "@react-native/eslint-config": "0.74.89",
+    "@react-native/metro-config": "0.74.89",
+    "babel-jest": "^29.6.3",
+    "eslint": "^8.19.0",
+    "jest": "^29.6.3",
+    "prettier": "2.8.8",
+    "react-test-renderer": "18.2.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
+
+
+file: index.js
+
+/**
+ * @format
+ */
+
+import {AppRegistry} from 'react-native';
+import App from './App';
+import {name as appName} from './app.json';
+
+AppRegistry.registerComponent(appName, () => App);
+
+
+
+file: app.json
+
+{
+  "name": "ammosovMaxim",
+  "displayName": "ammosovMaxim"
+}
+
+
+
+file: .eslintrc.js
+
+module.exports = {
+  root: true,
+  extends: '@react-native',
+};
+
+
+

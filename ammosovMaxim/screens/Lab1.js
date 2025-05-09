@@ -15,8 +15,7 @@ const Lab1 = () => {
         <Button title="Сбросить" onPress={() => setCount(0)} />
       </View>
       <View style={styles.navigationButton}>
-        <Button title="Перейти к Lab2" onPress={() => navigation.navigate('Lab2')} />
-        <Button title="Перейти к Lab3" onPress={() => navigation.navigate('Lab3')} />
+        <Button title="Назад" onPress={() => navigation.navigate('Home')} />
       </View>
     </View>
   );

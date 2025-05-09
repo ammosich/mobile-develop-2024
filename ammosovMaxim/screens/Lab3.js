@@ -72,7 +72,7 @@ const Lab3 = () => {
 
       {/* Навигация */}
       <View style={styles.navigationButton}>
-        <Button title="Перейти к Lab1" onPress={() => navigation.navigate('Lab1')} />
+        <Button title="Назад" onPress={() => navigation.navigate('Home')} />
       </View>
     </View>
   );

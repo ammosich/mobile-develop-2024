@@ -24,8 +24,7 @@ const Lab2 = () => {
       />
       <Text style={styles.result}>Количество символов: {charCount}</Text>
       <View style={styles.navigationButton}>
-        <Button title="Перейти к Lab1" onPress={() => navigation.navigate('Lab1')} />
-        <Button title="Перейти к Lab3" onPress={() => navigation.navigate('Lab3')} />
+        <Button title="Назад" onPress={() => navigation.navigate('Home')} />
       </View>
     </View>
   );
