@@ -2,10 +2,12 @@ import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { themes } from '../themes';
 
 const Home = () => {
   const navigation = useNavigation();
   const isDark = useSelector((state) => state.theme.isDark);
+  const theme = isDark ? themes.dark : themes.light;
   const fadeAnim = new Animated.Value(0);
 
   useEffect(() => {
@@ -21,19 +23,19 @@ const Home = () => {
   };
 
   return (
-    <Animated.View style={[styles.container, { opacity: fadeAnim, backgroundColor: isDark ? '#0D0D0D' : '#1A1A1A' }]}>
-      <Text style={[styles.header, { color: isDark ? '#FFFFFF' : '#E0E0E0' }]}>Лабораторные</Text>
-      <TouchableOpacity style={styles.button} onPress={() => handlePress('Lab1')}>
-        <Text style={styles.buttonText}>Лабораторная 1</Text>
+    <Animated.View style={[styles.container, { opacity: fadeAnim, backgroundColor: theme.background }]}>
+      <Text style={[styles.header, { color: theme.headerText }]}>Лабораторные</Text>
+      <TouchableOpacity style={[styles.button, { backgroundColor: theme.buttonBackground, borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab1')}>
+        <Text style={[styles.buttonText, { color: theme.labelText }]}>Лабораторная 1</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => handlePress('Lab2')}>
-        <Text style={styles.buttonText}>Лабораторная 2</Text>
+      <TouchableOpacity style={[styles.button, { backgroundColor: theme.buttonBackground, borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab2')}>
+        <Text style={[styles.buttonText, { color: theme.labelText }]}>Лабораторная 2</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => handlePress('Lab3')}>
-        <Text style={styles.buttonText}>Лабораторная 3</Text>
+      <TouchableOpacity style={[styles.button, { backgroundColor: theme.buttonBackground, borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab3')}>
+        <Text style={[styles.buttonText, { color: theme.labelText }]}>Лабораторная 3</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => handlePress('Lab4')}>
-        <Text style={styles.buttonText}>Лабораторная 4</Text>
+      <TouchableOpacity style={[styles.button, { backgroundColor: theme.buttonBackground, borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab4')}>
+        <Text style={[styles.buttonText, { color: theme.labelText }]}>Лабораторная 4</Text>
       </TouchableOpacity>
     </Animated.View>
   );
@@ -57,7 +59,6 @@ const styles = StyleSheet.create({
     textShadowRadius: 8,
   },
   button: {
-    backgroundColor: '#2C2C2C',
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -65,8 +66,6 @@ const styles = StyleSheet.create({
     width: '80%',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#00D4FF',
-    shadowColor: '#00D4FF',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
     shadowRadius: 8,
@@ -74,7 +73,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: 'Roboto Mono',
     fontSize: 18,
-    color: '#E0E0E0',
     textTransform: 'uppercase',
   },
 });

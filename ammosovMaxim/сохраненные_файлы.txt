@@ -250,33 +250,46 @@ export default App;
 
 file: screens/Home.js
 
-import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { themes } from '../themes';
 
 const Home = () => {
   const navigation = useNavigation();
+  const isDark = useSelector((state) => state.theme.isDark);
+  const theme = isDark ? themes.dark : themes.light;
+  const fadeAnim = new Animated.Value(0);
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
+  const handlePress = (screen) => {
+    navigation.navigate(screen);
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Выбор лабораторных</Text>
-      <Button 
-        title="Лабораторная 1"
-        onPress={() => navigation.navigate('Lab1')}
-      />
-      <Button 
-        title="Лабораторная 2"
-        onPress={() => navigation.navigate('Lab2')}
-      />
-      <Button 
-        title="Лабораторная 3"
-        onPress={() => navigation.navigate('Lab3')}
-      />
-      <Button 
-        title="Лабораторная 4"
-        onPress={() => navigation.navigate('Lab4')}
-      />
-    </View>
+    <Animated.View style={[styles.container, { opacity: fadeAnim, backgroundColor: theme.background }]}>
+      <Text style={[styles.header, { color: theme.headerText }]}>Лабораторные</Text>
+      <TouchableOpacity style={[styles.button, { borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab1')}>
+        <Text style={[styles.buttonText, { color: theme.labelText }]}>Лабораторная 1</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[styles.button, { borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab2')}>
+        <Text style={[styles.buttonText, { color: theme.labelText }]}>Лабораторная 2</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[styles.button, { borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab3')}>
+        <Text style={[styles.buttonText, { color: theme.labelText }]}>Лабораторная 3</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[styles.button, { borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab4')}>
+        <Text style={[styles.buttonText, { color: theme.labelText }]}>Лабораторная 4</Text>
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
 
@@ -285,11 +298,35 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
   },
   header: {
-    fontSize: 24,
+    fontFamily: 'Roboto Mono',
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 40,
+    textAlign: 'center',
+    textShadowColor: '#00D4FF',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
+  },
+  button: {
+    backgroundColor: '#2C2C2C', // Заменено ниже в динамическом стиле
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    marginVertical: 10,
+    width: '80%',
+    alignItems: 'center',
+    borderWidth: 1,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+  },
+  buttonText: {
+    fontFamily: 'Roboto Mono',
+    fontSize: 18,
+    textTransform: 'uppercase',
   },
 });
 
@@ -298,32 +335,45 @@ export default Home;
 
 file: screens/Lab1.js
 
-import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { themes } from '../themes';
 
 const Lab1 = () => {
-  const [count, setCount] = useState(0); // Инициализируем состояние
+  const [count, setCount] = useState(0);
   const navigation = useNavigation();
-  const isDark = useSelector((state) => state.theme.isDark); // Получаем состояние темы
+  const isDark = useSelector((state) => state.theme.isDark);
+  const theme = isDark ? themes.dark : themes.light;
+  const fadeAnim = new Animated.Value(0);
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }, []);
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? '#333' : '#fff' }]}>
-      <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>useState Демонстрация (Lab1)</Text>
-      <Text style={[styles.counter, { color: isDark ? '#fff' : '#000' }]}>Счётчик: {count}</Text>
+    <Animated.View style={[styles.container, { opacity: fadeAnim, backgroundColor: theme.background }]}>
+      <Text style={[styles.title, { color: theme.headerText }]}>useState: Счётчик</Text>
+      <Text style={[styles.counter, { color: theme.resultText }]}>{count}</Text>
       <View style={styles.buttonContainer}>
-        <Button title="Увеличить" onPress={() => setCount(count + 1)} />
-        <Button title="Сбросить" onPress={() => setCount(0)} />
+        <TouchableOpacity style={[styles.button, { borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => setCount(count + 1)}>
+          <Text style={[styles.buttonText, { color: theme.labelText }]}>Увеличить</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, { borderColor: theme.backButtonBorder, shadowColor: theme.backButtonShadow }]} onPress={() => setCount(0)}>
+          <Text style={[styles.buttonText, { color: theme.labelText }]}>Сбросить</Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.navigationButton}>
-        <Button title="Назад" onPress={() => navigation.navigate('Home')} />
-      </View>
-    </View>
+      <TouchableOpacity style={[styles.backButton, { borderColor: theme.backButtonBorder, shadowColor: theme.backButtonShadow }]} onPress={() => navigation.navigate('Home')}>
+        <Text style={[styles.buttonText, { color: theme.labelText }]}>Назад</Text>
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
-
-export default Lab1;
 
 const styles = StyleSheet.create({
   container: {
@@ -333,63 +383,101 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontFamily: 'Roboto Mono',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 30,
+    textAlign: 'center',
+    textShadowColor: '#00D4FF',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
   },
   counter: {
-    fontSize: 32,
-    marginBottom: 30,
+    fontFamily: 'Roboto Mono',
+    fontSize: 48,
+    marginBottom: 40,
+    textShadowColor: '#00D4FF',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
-    gap: 10,
-    marginBottom: 20,
+    gap: 20,
+    marginBottom: 30,
   },
-  navigationButton: {
-    marginTop: 10,
-    gap: 10,
+  button: {
+    backgroundColor: '#2C2C2C', // Заменено ниже
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    borderWidth: 1,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+  },
+  backButton: {
+    backgroundColor: '#2C2C2C', // Заменено ниже
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    borderWidth: 1,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+  },
+  buttonText: {
+    fontFamily: 'Roboto Mono',
+    fontSize: 16,
+    textTransform: 'uppercase',
   },
 });
+
+export default Lab1;
 
 
 file: screens/Lab2.js
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { themes } from '../themes';
 
 const Lab2 = () => {
-  const [text, setText] = useState(''); // Введённый текст
-  const [charCount, setCharCount] = useState(0); // Количество символов
+  const [text, setText] = useState('');
+  const [charCount, setCharCount] = useState(0);
   const navigation = useNavigation();
-  const isDark = useSelector((state) => state.theme.isDark); // Получаем состояние темы
+  const isDark = useSelector((state) => state.theme.isDark);
+  const theme = isDark ? themes.dark : themes.light;
+  const fadeAnim = new Animated.Value(0);
 
-  // useEffect для подсчёта символов при изменении текста
   useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
     setCharCount(text.length);
   }, [text]);
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? '#333' : '#fff' }]}>
-      <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>useEffect Демонстрация (Lab2)</Text>
-      <Text style={[styles.label, { color: isDark ? '#fff' : '#000' }]}>Введите текст:</Text>
+    <Animated.View style={[styles.container, { opacity: fadeAnim, backgroundColor: theme.background }]}>
+      <Text style={[styles.title, { color: theme.headerText }]}>useEffect: Текст</Text>
+      <Text style={[styles.label, { color: theme.labelText }]}>Введите текст:</Text>
       <TextInput
-        style={[styles.input, { backgroundColor: isDark ? '#555' : '#fff', color: isDark ? '#fff' : '#000' }]}
+        style={[styles.input, { backgroundColor: theme.inputBackground, color: theme.inputText, borderColor: theme.inputBorder }]}
         value={text}
         onChangeText={setText}
         placeholder="Начните печатать..."
-        placeholderTextColor={isDark ? '#aaa' : '#666'}
+        placeholderTextColor={theme.inputPlaceholder}
       />
-      <Text style={[styles.result, { color: isDark ? '#fff' : '#000' }]}>Количество символов: {charCount}</Text>
-      <View style={styles.navigationButton}>
-        <Button title="Назад" onPress={() => navigation.navigate('Home')} />
-      </View>
-    </View>
+      <Text style={[styles.result, { color: theme.resultText }]}>Символов: {charCount}</Text>
+      <TouchableOpacity style={[styles.backButton, { borderColor: theme.backButtonBorder, shadowColor: theme.backButtonShadow }]} onPress={() => navigation.navigate('Home')}>
+        <Text style={[styles.buttonText, { color: theme.labelText }]}>Назад</Text>
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
-
-export default Lab2;
 
 const styles = StyleSheet.create({
   container: {
@@ -399,119 +487,134 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontFamily: 'Roboto Mono',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 30,
+    textAlign: 'center',
+    textShadowColor: '#00D4FF',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
   },
   label: {
+    fontFamily: 'Roboto Mono',
     fontSize: 18,
-    marginBottom: 10,
+    marginBottom: 15,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
+    padding: 12,
     width: '80%',
-    marginBottom: 20,
-    borderRadius: 5,
+    marginBottom: 30,
+    borderRadius: 8,
+    fontFamily: 'Roboto Mono',
     fontSize: 16,
+    shadowColor: '#00D4FF',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
   },
   result: {
-    fontSize: 20,
-    marginBottom: 20,
+    fontFamily: 'Roboto Mono',
+    fontSize: 24,
+    marginBottom: 40,
+    textShadowColor: '#00D4FF',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
   },
-  navigationButton: {
-    marginTop: 10,
-    gap: 10,
+  backButton: {
+    backgroundColor: '#2C2C2C', // Заменено ниже
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    borderWidth: 1,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+  },
+  buttonText: {
+    fontFamily: 'Roboto Mono',
+    fontSize: 16,
+    textTransform: 'uppercase',
   },
 });
+
+export default Lab2;
 
 
 file: screens/Lab3.js
 
-import React, { useState, useMemo } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
+import React, { useState, useMemo, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Animated, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { themes } from '../themes';
 
-// Функция для вычисления факториала (тяжёлая вычислительная задача)
 const calculateFactorial = (n) => {
-  let result = 1n; // Используем BigInt для больших чисел
+  let result = 1n;
   for (let i = 1n; i <= n; i++) {
     result *= i;
   }
-  return result.toString(); // Возвращаем как строку для отображения
+  return result.toString();
 };
 
 const Lab3 = () => {
-  const [inputNumber, setInputNumber] = useState('20'); // Входное число для факториала
-  const [trigger, setTrigger] = useState(0); // Состояние для принудительного рендера
+  const [inputNumber, setInputNumber] = useState('20');
+  const [trigger, setTrigger] = useState(0);
   const navigation = useNavigation();
-  const isDark = useSelector((state) => state.theme.isDark); // Получаем состояние темы
+  const isDark = useSelector((state) => state.theme.isDark);
+  const theme = isDark ? themes.dark : themes.light;
+  const fadeAnim = new Animated.Value(0);
 
-  // Без useMemo: вычисление при каждом рендере
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
   const startTimeWithoutMemo = performance.now();
   const resultWithoutMemo = calculateFactorial(BigInt(inputNumber || 0));
   const timeWithoutMemo = (performance.now() - startTimeWithoutMemo).toFixed(2);
 
-  // С useMemo: кэширование результата
   const startTimeWithMemo = performance.now();
-  const resultWithMemo = useMemo(() => {
-    return calculateFactorial(BigInt(inputNumber || 0));
-  }, [inputNumber]);
+  const resultWithMemo = useMemo(() => calculateFactorial(BigInt(inputNumber || 0)), [inputNumber]);
   const timeWithMemo = (performance.now() - startTimeWithMemo).toFixed(2);
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? '#333' : '#fff' }]}>
-      <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>Демонстрация useMemo (Lab3)</Text>
-      
-      {/* Ввод числа */}
-      <Text style={[styles.label, { color: isDark ? '#fff' : '#000' }]}>Введите число для вычисления факториала:</Text>
+    <Animated.View style={[styles.container, { opacity: fadeAnim, backgroundColor: theme.background }]}>
+      <Text style={[styles.title, { color: theme.headerText }]}>useMemo: Факториал</Text>
+      <Text style={[styles.label, { color: theme.labelText }]}>Число:</Text>
       <TextInput
-        style={[styles.input, { backgroundColor: isDark ? '#555' : '#fff', color: isDark ? '#fff' : '#000' }]}
+        style={[styles.input, { backgroundColor: theme.inputBackground, color: theme.inputText, borderColor: theme.inputBorder }]}
         keyboardType="numeric"
         value={inputNumber}
         onChangeText={setInputNumber}
-        placeholder="Введите число (например, 20)"
-        placeholderTextColor={isDark ? '#aaa' : '#666'}
+        placeholder="Введите число"
+        placeholderTextColor={theme.inputPlaceholder}
       />
-
-      {/* Без useMemo */}
       <View style={styles.resultContainer}>
-        <Text style={[styles.subTitle, { color: isDark ? '#fff' : '#000' }]}>Без useMemo:</Text>
-        <Text style={[styles.result, { color: isDark ? '#fff' : '#000' }]}>
-          Факториал: {resultWithoutMemo.slice(0, 20)}...
-        </Text>
-        <Text style={[styles.time, { color: isDark ? '#ccc' : '#555' }]}>Время: {timeWithoutMemo} мс</Text>
-        {timeWithoutMemo > 10 && <ActivityIndicator size="small" color={isDark ? '#ff6666' : '#ff0000'} />}
+        <Text style={[styles.subTitle, { color: theme.labelText }]}>Без useMemo:</Text>
+        <Text style={[styles.result, { color: theme.resultText }]}>Факториал: {resultWithoutMemo.slice(0, 20)}...</Text>
+        <Text style={[styles.time, { color: theme.labelText }]}>Время: {timeWithoutMemo} мс</Text>
+        {timeWithoutMemo > 10 && <ActivityIndicator size="small" color={theme.indicator} />}
       </View>
-
-      {/* С useMemo */}
       <View style={styles.resultContainer}>
-        <Text style={[styles.subTitle, { color: isDark ? '#fff' : '#000' }]}>С useMemo:</Text>
-        <Text style={[styles.result, { color: isDark ? '#fff' : '#000' }]}>
-          Факториал: {resultWithMemo.slice(0, 20)}...
-        </Text>
-        <Text style={[styles.time, { color: isDark ? '#ccc' : '#555' }]}>Время: {timeWithMemo} мс</Text>
-        {timeWithMemo > 10 && <ActivityIndicator size="small" color={isDark ? '#ff6666' : '#ff0000'} />}
+        <Text style={[styles.subTitle, { color: theme.labelText }]}>С useMemo:</Text>
+        <Text style={[styles.result, { color: theme.resultText }]}>Факториал: {resultWithMemo.slice(0, 20)}...</Text>
+        <Text style={[styles.time, { color: theme.labelText }]}>Время: {timeWithMemo} мс</Text>
+        {timeWithMemo > 10 && <ActivityIndicator size="small" color={theme.indicator} />}
       </View>
-
-      {/* Кнопка для принудительного рендера */}
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Обновить (триггер рендера)"
-          onPress={() => setTrigger(trigger + 1)}
-        />
-      </View>
-
-      {/* Навигация */}
-      <View style={styles.navigationButton}>
-        <Button title="Назад" onPress={() => navigation.navigate('Home')} />
-      </View>
-    </View>
+      <TouchableOpacity style={[styles.button, { borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => setTrigger(trigger + 1)}>
+        <Text style={[styles.buttonText, { color: theme.labelText }]}>Обновить</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[styles.backButton, { borderColor: theme.backButtonBorder, shadowColor: theme.backButtonShadow }]} onPress={() => navigation.navigate('Home')}>
+        <Text style={[styles.buttonText, { color: theme.labelText }]}>Назад</Text>
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
-
-export default Lab3;
 
 const styles = StyleSheet.create({
   container: {
@@ -521,79 +624,121 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontFamily: 'Roboto Mono',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 30,
     textAlign: 'center',
+    textShadowColor: '#00D4FF',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
   },
   label: {
+    fontFamily: 'Roboto Mono',
     fontSize: 18,
-    marginBottom: 10,
+    marginBottom: 15,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
+    padding: 12,
     width: '80%',
-    marginBottom: 20,
-    borderRadius: 5,
+    marginBottom: 30,
+    borderRadius: 8,
+    fontFamily: 'Roboto Mono',
     fontSize: 16,
+    shadowColor: '#00D4FF',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
   },
   resultContainer: {
     marginVertical: 20,
     alignItems: 'center',
   },
   subTitle: {
+    fontFamily: 'Roboto Mono',
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
   },
   result: {
+    fontFamily: 'Roboto Mono',
     fontSize: 16,
     marginBottom: 5,
   },
   time: {
+    fontFamily: 'Roboto Mono',
     fontSize: 16,
   },
-  buttonContainer: {
+  button: {
+    backgroundColor: '#2C2C2C', // Заменено ниже
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    borderWidth: 1,
     marginVertical: 10,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
   },
-  navigationButton: {
-    marginTop: 10,
+  backButton: {
+    backgroundColor: '#2C2C2C', // Заменено ниже
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    borderWidth: 1,
+    marginVertical: 10,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+  },
+  buttonText: {
+    fontFamily: 'Roboto Mono',
+    fontSize: 16,
+    textTransform: 'uppercase',
   },
 });
+
+export default Lab3;
 
 
 file: screens/Lab4.js
 
-import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../store/themeSlice';
+import { themes } from '../themes';
 
 const Lab4 = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const isDark = useSelector((state) => state.theme.isDark); // Получаем состояние темы
+  const isDark = useSelector((state) => state.theme.isDark);
+  const theme = isDark ? themes.dark : themes.light;
+  const fadeAnim = new Animated.Value(0);
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }, []);
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? '#333' : '#fff' }]}>
-      <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>Демонстрация Redux (Lab4)</Text>
-      <Text style={[styles.label, { color: isDark ? '#fff' : '#000' }]}>Текущая тема: {isDark ? 'Тёмная' : 'Светлая'}</Text>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Переключить тему"
-          onPress={() => dispatch(toggleTheme())}
-        />
-      </View>
-      <View style={styles.navigationButton}>
-        <Button title="Назад" onPress={() => navigation.navigate('Home')} />
-      </View>
-    </View>
+    <Animated.View style={[styles.container, { opacity: fadeAnim, backgroundColor: theme.background }]}>
+      <Text style={[styles.title, { color: theme.headerText }]}>Redux: Тема</Text>
+      <Text style={[styles.label, { color: theme.resultText }]}>Тема: {isDark ? 'Мрачная' : 'Тёмная'}</Text>
+      <TouchableOpacity style={[styles.button, { borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => dispatch(toggleTheme())}>
+        <Text style={[styles.buttonText, { color: theme.labelText }]}>Переключить</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[styles.backButton, { borderColor: theme.backButtonBorder, shadowColor: theme.backButtonShadow }]} onPress={() => navigation.navigate('Home')}>
+        <Text style={[styles.buttonText, { color: theme.labelText }]}>Назад</Text>
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
-
-export default Lab4;
 
 const styles = StyleSheet.create({
   container: {
@@ -603,21 +748,53 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontFamily: 'Roboto Mono',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 30,
     textAlign: 'center',
+    textShadowColor: '#00D4FF',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
   },
   label: {
-    fontSize: 18,
-    marginBottom: 20,
+    fontFamily: 'Roboto Mono',
+    fontSize: 24,
+    marginBottom: 40,
+    textShadowColor: '#00D4FF',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
   },
-  buttonContainer: {
+  button: {
+    backgroundColor: '#2C2C2C', // Заменено ниже
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    borderWidth: 1,
     marginVertical: 10,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
   },
-  navigationButton: {
-    marginTop: 10,
+  backButton: {
+    backgroundColor: '#2C2C2C', // Заменено ниже
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    borderWidth: 1,
+    marginVertical: 10,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+  },
+  buttonText: {
+    fontFamily: 'Roboto Mono',
+    fontSize: 16,
+    textTransform: 'uppercase',
   },
 });
+
+export default Lab4;
 
 
 file: store/index.js
