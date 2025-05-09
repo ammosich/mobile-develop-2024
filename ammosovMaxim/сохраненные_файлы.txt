@@ -277,16 +277,16 @@ const Home = () => {
   return (
     <Animated.View style={[styles.container, { opacity: fadeAnim, backgroundColor: theme.background }]}>
       <Text style={[styles.header, { color: theme.headerText }]}>Лабораторные</Text>
-      <TouchableOpacity style={[styles.button, { borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab1')}>
+      <TouchableOpacity style={[styles.button, { backgroundColor: theme.buttonBackground, borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab1')}>
         <Text style={[styles.buttonText, { color: theme.labelText }]}>Лабораторная 1</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.button, { borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab2')}>
+      <TouchableOpacity style={[styles.button, { backgroundColor: theme.buttonBackground, borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab2')}>
         <Text style={[styles.buttonText, { color: theme.labelText }]}>Лабораторная 2</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.button, { borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab3')}>
+      <TouchableOpacity style={[styles.button, { backgroundColor: theme.buttonBackground, borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab3')}>
         <Text style={[styles.buttonText, { color: theme.labelText }]}>Лабораторная 3</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.button, { borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab4')}>
+      <TouchableOpacity style={[styles.button, { backgroundColor: theme.buttonBackground, borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => handlePress('Lab4')}>
         <Text style={[styles.buttonText, { color: theme.labelText }]}>Лабораторная 4</Text>
       </TouchableOpacity>
     </Animated.View>
@@ -311,7 +311,6 @@ const styles = StyleSheet.create({
     textShadowRadius: 8,
   },
   button: {
-    backgroundColor: '#2C2C2C', // Заменено ниже в динамическом стиле
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -361,14 +360,14 @@ const Lab1 = () => {
       <Text style={[styles.title, { color: theme.headerText }]}>useState: Счётчик</Text>
       <Text style={[styles.counter, { color: theme.resultText }]}>{count}</Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={[styles.button, { borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => setCount(count + 1)}>
+        <TouchableOpacity style={[styles.button, { backgroundColor: theme.buttonBackground, borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => setCount(count + 1)}>
           <Text style={[styles.buttonText, { color: theme.labelText }]}>Увеличить</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, { borderColor: theme.backButtonBorder, shadowColor: theme.backButtonShadow }]} onPress={() => setCount(0)}>
+        <TouchableOpacity style={[styles.button, { backgroundColor: theme.buttonBackground, borderColor: theme.backButtonBorder, shadowColor: theme.backButtonShadow }]} onPress={() => setCount(0)}>
           <Text style={[styles.buttonText, { color: theme.labelText }]}>Сбросить</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={[styles.backButton, { borderColor: theme.backButtonBorder, shadowColor: theme.backButtonShadow }]} onPress={() => navigation.navigate('Home')}>
+      <TouchableOpacity style={[styles.backButton, { backgroundColor: theme.buttonBackground, borderColor: theme.backButtonBorder, shadowColor: theme.backButtonShadow }]} onPress={() => navigation.navigate('Home')}>
         <Text style={[styles.buttonText, { color: theme.labelText }]}>Назад</Text>
       </TouchableOpacity>
     </Animated.View>
@@ -406,7 +405,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   button: {
-    backgroundColor: '#2C2C2C', // Заменено ниже
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -416,7 +414,6 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
   },
   backButton: {
-    backgroundColor: '#2C2C2C', // Заменено ниже
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -472,7 +469,7 @@ const Lab2 = () => {
         placeholderTextColor={theme.inputPlaceholder}
       />
       <Text style={[styles.result, { color: theme.resultText }]}>Символов: {charCount}</Text>
-      <TouchableOpacity style={[styles.backButton, { borderColor: theme.backButtonBorder, shadowColor: theme.backButtonShadow }]} onPress={() => navigation.navigate('Home')}>
+      <TouchableOpacity style={[styles.backButton, { backgroundColor: theme.buttonBackground, borderColor: theme.backButtonBorder, shadowColor: theme.backButtonShadow }]} onPress={() => navigation.navigate('Home')}>
         <Text style={[styles.buttonText, { color: theme.labelText }]}>Назад</Text>
       </TouchableOpacity>
     </Animated.View>
@@ -523,7 +520,6 @@ const styles = StyleSheet.create({
     textShadowRadius: 8,
   },
   backButton: {
-    backgroundColor: '#2C2C2C', // Заменено ниже
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -606,10 +602,10 @@ const Lab3 = () => {
         <Text style={[styles.time, { color: theme.labelText }]}>Время: {timeWithMemo} мс</Text>
         {timeWithMemo > 10 && <ActivityIndicator size="small" color={theme.indicator} />}
       </View>
-      <TouchableOpacity style={[styles.button, { borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => setTrigger(trigger + 1)}>
+      <TouchableOpacity style={[styles.button, { backgroundColor: theme.buttonBackground, borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => setTrigger(trigger + 1)}>
         <Text style={[styles.buttonText, { color: theme.labelText }]}>Обновить</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.backButton, { borderColor: theme.backButtonBorder, shadowColor: theme.backButtonShadow }]} onPress={() => navigation.navigate('Home')}>
+      <TouchableOpacity style={[styles.backButton, { backgroundColor: theme.buttonBackground, borderColor: theme.backButtonBorder, shadowColor: theme.backButtonShadow }]} onPress={() => navigation.navigate('Home')}>
         <Text style={[styles.buttonText, { color: theme.labelText }]}>Назад</Text>
       </TouchableOpacity>
     </Animated.View>
@@ -671,7 +667,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#2C2C2C', // Заменено ниже
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -682,7 +677,6 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
   },
   backButton: {
-    backgroundColor: '#2C2C2C', // Заменено ниже
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -729,11 +723,11 @@ const Lab4 = () => {
   return (
     <Animated.View style={[styles.container, { opacity: fadeAnim, backgroundColor: theme.background }]}>
       <Text style={[styles.title, { color: theme.headerText }]}>Redux: Тема</Text>
-      <Text style={[styles.label, { color: theme.resultText }]}>Тема: {isDark ? 'Мрачная' : 'Тёмная'}</Text>
-      <TouchableOpacity style={[styles.button, { borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => dispatch(toggleTheme())}>
+      <Text style={[styles.label, { color: theme.resultText }]}>Тема: {isDark ? 'Тёмная' : 'Светлая'}</Text>
+      <TouchableOpacity style={[styles.button, { backgroundColor: theme.buttonBackground, borderColor: theme.buttonBorder, shadowColor: theme.buttonShadow }]} onPress={() => dispatch(toggleTheme())}>
         <Text style={[styles.buttonText, { color: theme.labelText }]}>Переключить</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.backButton, { borderColor: theme.backButtonBorder, shadowColor: theme.backButtonShadow }]} onPress={() => navigation.navigate('Home')}>
+      <TouchableOpacity style={[styles.backButton, { backgroundColor: theme.buttonBackground, borderColor: theme.backButtonBorder, shadowColor: theme.backButtonShadow }]} onPress={() => navigation.navigate('Home')}>
         <Text style={[styles.buttonText, { color: theme.labelText }]}>Назад</Text>
       </TouchableOpacity>
     </Animated.View>
@@ -766,7 +760,6 @@ const styles = StyleSheet.create({
     textShadowRadius: 8,
   },
   button: {
-    backgroundColor: '#2C2C2C', // Заменено ниже
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -777,7 +770,6 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
   },
   backButton: {
-    backgroundColor: '#2C2C2C', // Заменено ниже
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -816,7 +808,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const themeSlice = createSlice({
   name: 'theme',
   initialState: {
-    isDark: false, // По умолчанию светлая тема
+    isDark: true, // По умолчанию тёмная тема
   },
   reducers: {
     toggleTheme: (state) => {
