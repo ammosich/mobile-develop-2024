@@ -1,29 +1,40 @@
-import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
 const Lab1 = () => {
-  const [count, setCount] = useState(0); // Инициализируем состояние
+  const [count, setCount] = useState(0);
   const navigation = useNavigation();
-  const isDark = useSelector((state) => state.theme.isDark); // Получаем состояние темы
+  const isDark = useSelector((state) => state.theme.isDark);
+  const fadeAnim = new Animated.Value(0);
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }, []);
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? '#333' : '#fff' }]}>
-      <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>useState Демонстрация (Lab1)</Text>
-      <Text style={[styles.counter, { color: isDark ? '#fff' : '#000' }]}>Счётчик: {count}</Text>
+    <Animated.View style={[styles.container, { opacity: fadeAnim, backgroundColor: isDark ? '#0D0D0D' : '#1A1A1A' }]}>
+      <Text style={[styles.title, { color: isDark ? '#FFFFFF' : '#E0E0E0' }]}>useState: Счётчик</Text>
+      <Text style={[styles.counter, { color: '#00D4FF' }]}>{count}</Text>
       <View style={styles.buttonContainer}>
-        <Button title="Увеличить" onPress={() => setCount(count + 1)} />
-        <Button title="Сбросить" onPress={() => setCount(0)} />
+        <TouchableOpacity style={styles.button} onPress={() => setCount(count + 1)}>
+          <Text style={styles.buttonText}>Увеличить</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, { borderColor: '#FF2E63' }]} onPress={() => setCount(0)}>
+          <Text style={styles.buttonText}>Сбросить</Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.navigationButton}>
-        <Button title="Назад" onPress={() => navigation.navigate('Home')} />
-      </View>
-    </View>
+      <TouchableOpacity style={[styles.backButton, { borderColor: '#FF2E63' }]} onPress={() => navigation.navigate('Home')}>
+        <Text style={styles.buttonText}>Назад</Text>
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
-
-export default Lab1;
 
 const styles = StyleSheet.create({
   container: {
@@ -33,20 +44,57 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontFamily: 'Roboto Mono',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 30,
+    textAlign: 'center',
+    textShadowColor: '#00D4FF',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
   },
   counter: {
-    fontSize: 32,
-    marginBottom: 30,
+    fontFamily: 'Roboto Mono',
+    fontSize: 48,
+    marginBottom: 40,
+    textShadowColor: '#00D4FF',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
-    gap: 10,
-    marginBottom: 20,
+    gap: 20,
+    marginBottom: 30,
   },
-  navigationButton: {
-    marginTop: 10,
-    gap: 10,
+  button: {
+    backgroundColor: '#2C2C2C',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#00D4FF',
+    shadowColor: '#00D4FF',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+  },
+  backButton: {
+    backgroundColor: '#2C2C2C',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    borderWidth: 1,
+    shadowColor: '#FF2E63',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+  },
+  buttonText: {
+    fontFamily: 'Roboto Mono',
+    fontSize: 16,
+    color: '#E0E0E0',
+    textTransform: 'uppercase',
   },
 });
+
+export default Lab1;

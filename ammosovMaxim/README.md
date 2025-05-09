@@ -1,79 +1,134 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+---
 
-# Getting Started
+## Лабораторные работы
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+Проект включает шесть лабораторных работ, каждая из которых демонстрирует определённые возможности React Native, завершаясь созданием и экспортом пользовательского интерфейса в Figma.
 
-## Step 1: Start the Metro Server
+### Лаб 1: Демонстрация useState
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+**Цель**: Показать использование хука `useState` для управления локальным состоянием компонента.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+**Описание**:
+- **Экран**: `Лаб1` содержит счётчик, который увеличивается или сбрасывается с помощью двух кнопок.
+- **Функциональность**:
+  - Использует `useState` для управления значением счётчика.
+  - Кнопки: "Увеличить" (добавляет 1) и "Сбросить" (устанавливает 0).
+  - Навигация: Кнопка "Назад" возвращает на экран `Главная`.
+- **Интерфейс**: Мрачный минималистичный дизайн в киберпанковском стиле:
+  - Фон: `#1A1A1A` (или `#0D0D0D` для "мрачной" темы).
+  - Текст: Неоновый голубой (`#00D4FF`) для счётчика, светло-серый (`#E0E0E0`) для заголовков.
+  - Кнопки: Кастомные `TouchableOpacity` с неоновой голубой (`#00D4FF`) или красной (`#FF2E63`) обводкой и светящимися тенями.
+  - Шрифт: `Roboto Mono` для футуристического моноширинного вида.
+  - Анимация: Эффект появления (fade-in) при загрузке экрана с помощью `Animated`.
 
-```bash
-# using npm
-npm start
+**Файлы**:
+- `screens/Lab1.js`
 
-# OR using Yarn
-yarn start
-```
+### Лаб 2: Демонстрация useEffect
 
-## Step 2: Start your Application
+**Цель**: Продемонстрировать хук `useEffect` для выполнения побочных эффектов.
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+**Описание**:
+- **Экран**: `Лаб2` позволяет вводить текст и отображает количество символов в реальном времени.
+- **Функциональность**:
+  - Использует `useState` для текста и счёта символов.
+  - Использует `useEffect` для обновления счёта символов при изменении текста.
+  - Навигация: Кнопка "Назад" возвращает на экран `Главная`.
+- **Интерфейс**:
+  - Поле ввода: Тёмный фон (`#2C2C2C` или `#333`) с неоновой обводкой (`#00D4FF` или `#FF2E63`).
+  - Текст: Неоновый голубой (`#00D4FF`) для количества символов, светло-серый (`#E0E0E0`) для меток.
+  - Кнопка: Кастомная `TouchableOpacity` с красной обводкой (`#FF2E63`) и светящейся тенью.
+  - Шрифт: `Roboto Mono`.
+  - Анимация: Эффект появления (fade-in).
 
-### For Android
+**Файлы**:
+- `screens/Lab2.js`
 
-```bash
-# using npm
-npm run android
+### Лаб 3: Демонстрация useMemo
 
-# OR using Yarn
-yarn android
-```
+**Цель**: Показать хук `useMemo` для оптимизации производительности.
 
-### For iOS
+**Описание**:
+- **Экран**: `Лаб3` вычисляет факториал введённого числа, сравнивая производительность с `useMemo` и без него.
+- **Функциональность**:
+  - Использует `useState` для ввода числа и триггера рендера.
+  - Использует `useMemo` для кэширования вычислений факториала, снижая количество повторных вычислений.
+  - Отображает результаты и время вычислений для обоих подходов.
+  - Кнопки: "Обновить" для принудительного рендера и "Назад" для навигации.
+- **Интерфейс**:
+  - Поле ввода: Тёмный фон (`#2C2C2C` или `#333`) с неоновой обводкой.
+  - Текст: Неоновый голубой (`#00D4FF`) для результатов, светло-серый (`#E0E0E0`) для меток.
+  - Индикаторы: Неоновый красный (`#FF2E63`) `ActivityIndicator` для долгих вычислений.
+  - Кнопки: Кастомные `TouchableOpacity` с голубой (`#00D4FF`) или красной (`#FF2E63`) обводкой.
+  - Шрифт: `Roboto Mono`.
+  - Анимация: Эффект появления.
 
-```bash
-# using npm
-npm run ios
+**Файлы**:
+- `screens/Lab3.js`
 
-# OR using Yarn
-yarn ios
-```
+### Лаб 4: Интеграция Redux
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+**Цель**: Реализовать управление глобальным состоянием с помощью Redux.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+**Описание**:
+- **Экран**: `Лаб4` позволяет переключать между двумя вариантами темы (тёмная и "мрачная") с использованием Redux.
+- **Функциональность**:
+  - Использует `react-redux` и `@reduxjs/toolkit` для управления глобальным состоянием `isDark`.
+  - Кнопка "Переключить" отправляет действие `toggleTheme`, обновляя тему на всех экранах (`Главная`, `Лаб1`, `Лаб2`, `Лаб3`, `Лаб4`).
+  - Навигация: Кнопка "Назад" возвращает на экран `Главная`.
+- **Интерфейс**:
+  - Фон: Переключается между `#1A1A1A` (тёмная) и `#0D0D0D` (мрачная).
+  - Текст: Неоновый голубой (`#00D4FF`) для статуса темы, светло-серый (`#E0E0E0`) для меток.
+  - Кнопки: Кастомные `TouchableOpacity` с голубой (`#00D4FF`) или красной (`#FF2E63`) обводкой и светящимися тенями.
+  - Шрифт: `Roboto Mono`.
+  - Анимация: Эффект появления.
 
-## Step 3: Modifying your App
+**Файлы**:
+- `screens/Lab4.js`
+- `store/index.js`
+- `store/themeSlice.js`
 
-Now that you have successfully run the app, let's modify it.
+### Лаб 5: Экспорт дизайна в Figma
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+**Цель**: Экспортировать пользовательский интерфейс приложения в Figma для документации и дальнейшей доработки.
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+**Описание**:
+- **Задача**: Киберпанковский интерфейс (тёмные фоны, неоновые акценты, шрифт `Roboto Mono`) был экспортирован в Figma для создания системы дизайна.
+- **Процесс**:
+  - Сделаны скриншоты всех экранов (`Главная`, `Лаб1`, `Лаб2`, `Лаб3`, `Лаб4`) с помощью эмуляторов Android/iOS.
+  - Скриншоты импортированы в Figma, каждый размещён на отдельном фрейме (например, iPhone 14, 390x844).
+  - Созданы компоненты Figma для:
+    - **Кнопки**: Прямоугольники (`#2C2C2C`, радиус 8px) с неоновой обводкой (`#00D4FF` или `#FF2E63`) и светящимися тенями.
+    - **Поля ввода**: Тёмные прямоугольники (`#2C2C2C` или `#333`) с неоновой обводкой и текстом `Roboto Mono`.
+    - **Стили текста**: `Roboto Mono` на 28px (заголовки), 18px (метки), 16px (детали), цвета `#E0E0E0`, `#FFFFFF`, `#00D4FF`.
+    - **Индикаторы**: Неоновые красные (`#FF2E63`) спиннеры.
+  - Определены цветовые стили: `#1A1A1A`, `#0D0D0D`, `#00D4FF`, `#FF2E63`, `#E0E0E0`, `#FFFFFF`, `#666`.
+  - Добавлены прототипные анимации (появление, нажатие кнопок) с помощью `Smart Animate`.
+- **Результат**: Проект Figma с повторно используемыми компонентами, цветовыми и текстовыми стилями, документирующий интерфейс приложения.
 
-## Congratulations! :tada:
+**Ссылка на Figma**: [https://www.figma.com/design/CRcvXCnaf7Jlaul6vsTSwJ/ammosovMaxim?node-id=0-286&m=dev&t=XTbPvcytlyOhUEbH-1](https://www.figma.com/design/CRcvXCnaf7Jlaul6vsTSwJ/ammosovMaxim?node-id=0-286&m=dev&t=XTbPvcytlyOhUEbH-1)
 
-You've successfully run and modified your React Native App. :partying_face:
+**Примечание**: Лаб 5 и Лаб 6 вместе охватывают процесс работы с Figma, где Лаб 5 фокусируется на начальном экспорте и создании компонентов.
 
-### Now what?
+**Файлы**:
+- Нет (задача основана на Figma, без изменений кода).
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+### Лаб 6: Доработка дизайна в Figma
 
-# Troubleshooting
+**Цель**: Доработать и финализировать систему дизайна в Figma для передачи разработчикам или презентации.
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+**Описание**:
+- **Задача**: Улучшена система дизайна, начатая в Лаб 5, для упрощения передачи разработчикам или демонстрации.
+- **Процесс**:
+  - Организованы компоненты в библиотеку системы дизайна.
+  - Добавлена подробная документация по цветам, типографике и использованию компонентов.
+  - Создан прототип с интерактивными переходами (например, навигация между экранами, взаимодействие с кнопками).
+  - Экспортированы активы (SVG/PNG) для разработчиков и предоставлена ссылка на проект Figma.
+- **Результат**: Полноценная система дизайна в Figma, готовая для интеграции или презентации, соответствующая киберпанковской эстетике приложения.
 
-# Learn More
+**Ссылка на Figma**: [https://www.figma.com/design/CRcvXCnaf7Jlaul6vsTSwJ/ammosovMaxim?node-id=0-286&m=dev&t=XTbPvcytlyOhUEbH-1](https://www.figma.com/design/CRcvXCnaf7Jlaul6vsTSwJ/ammosovMaxim?node-id=0-286&m=dev&t=XTbPvcytlyOhUEbH-1)
 
-To learn more about React Native, take a look at the following resources:
+**Примечание**: Лаб 5 и Лаб 6 вместе охватывают процесс работы с Figma, где Лаб 6 фокусируется на доработке и документации.
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+---

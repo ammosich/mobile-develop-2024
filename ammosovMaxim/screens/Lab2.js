@@ -1,39 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
 const Lab2 = () => {
-  const [text, setText] = useState(''); // Введённый текст
-  const [charCount, setCharCount] = useState(0); // Количество символов
+  const [text, setText] = useState('');
+  const [charCount, setCharCount] = useState(0);
   const navigation = useNavigation();
-  const isDark = useSelector((state) => state.theme.isDark); // Получаем состояние темы
+  const isDark = useSelector((state) => state.theme.isDark);
+  const fadeAnim = new Animated.Value(0);
 
-  // useEffect для подсчёта символов при изменении текста
   useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
     setCharCount(text.length);
   }, [text]);
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? '#333' : '#fff' }]}>
-      <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>useEffect Демонстрация (Lab2)</Text>
-      <Text style={[styles.label, { color: isDark ? '#fff' : '#000' }]}>Введите текст:</Text>
+    <Animated.View style={[styles.container, { opacity: fadeAnim, backgroundColor: isDark ? '#0D0D0D' : '#1A1A1A' }]}>
+      <Text style={[styles.title, { color: isDark ? '#FFFFFF' : '#E0E0E0' }]}>useEffect: Текст</Text>
+      <Text style={[styles.label, { color: '#E0E0E0' }]}>Введите текст:</Text>
       <TextInput
-        style={[styles.input, { backgroundColor: isDark ? '#555' : '#fff', color: isDark ? '#fff' : '#000' }]}
+        style={[styles.input, { backgroundColor: isDark ? '#2C2C2C' : '#333', color: '#E0E0E0', borderColor: isDark ? '#FF2E63' : '#00D4FF' }]}
         value={text}
         onChangeText={setText}
         placeholder="Начните печатать..."
-        placeholderTextColor={isDark ? '#aaa' : '#666'}
+        placeholderTextColor="#666"
       />
-      <Text style={[styles.result, { color: isDark ? '#fff' : '#000' }]}>Количество символов: {charCount}</Text>
-      <View style={styles.navigationButton}>
-        <Button title="Назад" onPress={() => navigation.navigate('Home')} />
-      </View>
-    </View>
+      <Text style={[styles.result, { color: '#00D4FF' }]}>Символов: {charCount}</Text>
+      <TouchableOpacity style={[styles.backButton, { borderColor: '#FF2E63' }]} onPress={() => navigation.navigate('Home')}>
+        <Text style={styles.buttonText}>Назад</Text>
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
-
-export default Lab2;
 
 const styles = StyleSheet.create({
   container: {
@@ -43,28 +46,58 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontFamily: 'Roboto Mono',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 30,
+    textAlign: 'center',
+    textShadowColor: '#00D4FF',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
   },
   label: {
+    fontFamily: 'Roboto Mono',
     fontSize: 18,
-    marginBottom: 10,
+    marginBottom: 15,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
+    padding: 12,
     width: '80%',
-    marginBottom: 20,
-    borderRadius: 5,
+    marginBottom: 30,
+    borderRadius: 8,
+    fontFamily: 'Roboto Mono',
     fontSize: 16,
+    shadowColor: '#00D4FF',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
   },
   result: {
-    fontSize: 20,
-    marginBottom: 20,
+    fontFamily: 'Roboto Mono',
+    fontSize: 24,
+    marginBottom: 40,
+    textShadowColor: '#00D4FF',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
   },
-  navigationButton: {
-    marginTop: 10,
-    gap: 10,
+  backButton: {
+    backgroundColor: '#2C2C2C',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    borderWidth: 1,
+    shadowColor: '#FF2E63',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+  },
+  buttonText: {
+    fontFamily: 'Roboto Mono',
+    fontSize: 16,
+    color: '#E0E0E0',
+    textTransform: 'uppercase',
   },
 });
+
+export default Lab2;
